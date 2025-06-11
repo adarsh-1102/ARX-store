@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ARX Stores</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Unbounded', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #1b1b2f, #1f4068);
+      color: white;
+      min-height: 100vh;
+    }
+
+    .intro {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh; width: 100vw;
+      background: linear-gradient(to right, #5f72be, #9b23ea);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+      animation: fadeOut 2.5s ease-out forwards;
+    }
+
+    .intro h1 {
+      font-size: 4rem; color: white; opacity: 0;
+      animation: popIn 1s ease-out 0.3s forwards;
+      text-align: center;
+    }
+
+    @keyframes popIn {
+      0% {opacity: 0; transform: scale(0.6);}
+      100% {opacity: 1; transform: scale(1);}
+    }
+
+    @keyframes fadeOut {
+      0%, 80% {opacity: 1; visibility: visible;}
+      100% {opacity: 0; visibility: hidden;}
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .top-left { color: white; font-size: 1.2rem; }
+
+    .top-right {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .top-right a {
+      color: #0ef;
+      font-size: 0.95rem;
+      text-decoration: none;
+      background: rgba(255,255,255,0.1);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .cart-icon {
+      position: relative;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+    }
+
+    .cart-icon img { width: 100%; }
+
+    .cart-count {
+      position: absolute;
+      top: -10px; right: -10px;
+      background: #ff3d00;
+      color: white;
+      width: 18px; height: 18px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    .title-container {
+      text-align: center;
+      margin-top: 100px;
+      opacity: 0;
+      animation: fadeIn 1s ease 2.6s forwards;
+    }
+
+    .title-banner {
+      font-size: 3rem;
+      background: linear-gradient(to right, #5f72be, #9b23ea);
+      display: inline-block;
+      padding: 15px 40px;
+      border-radius: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-center {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1s ease 3s forwards;
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      width: 50%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 40px;
+      padding: 10px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    .search-box input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .search-box img {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+    }
+
+    .product-grid {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeIn 1s ease 3.5s forwards;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      max-width: 340px;
+      transition: transform 0.3s ease;
+      margin: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card:hover { transform: scale(1.05); }
+
+    .card img { width: 100%; height: auto; }
+
+    .card-content { padding: 20px; }
+
+    .card-content h2 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      color: #00ffae;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .btn {
+      background: #0ef;
+      color: #000;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.2s ease;
+      flex: 1;
+    }
+
+    .btn:hover { background: #00bcd4; }
+
+    .buy-btn {
+      background: #ff9100;
+      color: white;
+    }
+
+    .buy-btn:hover { background: #ff6d00; }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .form-container .btn {
+      width: 100%;
+      background: #0ef;
+      color: black;
+      font-weight: bold;
+    }
+
+    .form-container .btn:hover { background: #00bcd4; }
+
+    .cart-panel {
+      position: fixed;
+      top: 0; right: 0;
+      width: 300px; height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      padding: 20px;
+      transform: translateX(100%);
+      transition: transform 0.4s ease;
+      z-index: 10000;
+      color: white;
+    }
+
+    .cart-panel.active {
+      transform: translateX(0%);
+    }
+
+    .cart-panel h2 {
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .cart-item {
+      border-bottom: 1px solid #555;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+
+    .cart-item p { margin: 5px 0; }
+
+    .remove-btn {
+      background: #ff3d00;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .close-cart {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .buy-all-btn {
+      margin-top: 20px;
+      background: #00c853;
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .title-banner {
+        font-size: 2.2rem;
+        padding: 12px 20px;
+      }
+      .search-box {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="intro"><h1>ARX Stores</h1></div>
+
+<div class="top-bar">
+  <div class="top-left"></div>
+  <div class="top-right">
+    <a href="#">Sign In</a>
+    <a href="#" onclick="showForm()">Create Account</a>
+    <div class="cart-icon" onclick="toggleCart()">
+      <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart" />
+      <div class="cart-count" id="cartCount">0</div>
+    </div>
+  </div>
+</div>
+
+<div class="title-container">
+  <h1 class="title-banner">ARX Stores</h1>
+</div>
+
+<div class="search-center">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()">
+    <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Search">
+  </div>
+</div>
+
+<div class="product-grid" id="productGrid">
+  <div class="card">
+    <img src="https://tinypic.host/images/2025/06/11/1f4d184a4d1b6fd08.jpg" alt="Joggers">
+    <div class="card-content">
+      <h2>Modern Geometric Joggers</h2>
+      <div class="price">₹699</div>
+      <div class="buttons">
+        <button class="btn" onclick="addToCart('Modern Geometric Joggers', 699)">Add to Cart</button>
+        <button class="btn buy-btn">Buy Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="formOverlay">
+  <div class="form-container">
+    <h2>Create Your Account</h2>
+    <form onsubmit="return submitForm()">
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="tel" id="phone" placeholder="Phone Number" required>
+      <input type="text" id="address" placeholder="Address" required>
+      <input type="text" id="pin" placeholder="PIN Code" required>
+      <input type="email" id="email" placeholder="Gmail Address" required>
+      <button class="btn" type="submit">Create Account</button>
+    </form>
+  </div>
+</div>
+
+<div class="cart-panel" id="cartPanel">
+  <div class="close-cart" onclick="toggleCart()">✖</div>
+  <h2>Your Cart</h2>
+  <div id="cartItems"></div>
+  <button class="btn buy-all-btn" onclick="buyAll()">Buy All</button>
+</div>
+
+<script>
+  let cart = [];
+
+  function addToCart(name, price) {
+    cart.push({ name, price });
+    updateCartDisplay();
+    alert(name + " added to cart!");
+  }
+
+  function updateCartDisplay() {
+    document.getElementById('cartCount').textContent = cart.length;
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+    cart.forEach((item, index) => {
+      cartItems.innerHTML += `
+        <div class="cart-item">
+          <p><strong>${item.name}</strong></p>
+          <p>Price: ₹${item.price}</p>
+          <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+        </div>
+      `;
+    });
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCartDisplay();
+  }
+
+  function toggleCart() {
+    document.getElementById('cartPanel').classList.toggle('active');
+  }
+
+  function buyAll() {
+    if (cart.length === 0) {
+      alert("Cart is empty!");
+      return;
+    }
+    alert("Thanks for your purchase of ₹" + cart.reduce((sum, item) => sum + item.price, 0));
+    cart = [];
+    updateCartDisplay();
+    toggleCart();
+  }
+
+  function showForm() {
+    document.getElementById("formOverlay").style.display = "flex";
+  }
+
+  function submitForm() {
+    alert("Account created successfully!");
+    document.getElementById("formOverlay").style.display = "none";
+    return false;
+  }
+
+  function filterProducts() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+      const title = card.querySelector("h2").textContent.toLowerCase();
+      card.style.display = title.includes(input) ? "block" : "none";
+    });
+  }
+</script>
+</body>
+</html>
