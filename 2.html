@@ -5,69 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ARX Stores</title>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Unbounded', sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; }
     body {
       background: linear-gradient(135deg, #1b1b2f, #1f4068);
-      color: white;
-      min-height: 100vh;
+      color: white; min-height: 100vh; overflow-x: hidden;
     }
-
     .intro {
-      position: fixed;
-      top: 0; left: 0;
-      height: 100vh; width: 100vw;
+      position: fixed; top: 0; left: 0; height: 100vh; width: 100vw;
       background: linear-gradient(to right, #5f72be, #9b23ea);
       display: flex; align-items: center; justify-content: center;
       z-index: 9999;
       animation: fadeOut 2.5s ease-out forwards;
     }
-
     .intro h1 {
       font-size: 4rem; color: white; opacity: 0;
-      animation: popIn 1s ease-out 0.3s forwards;
-      text-align: center;
+      animation: popIn 1s ease-out 0.3s forwards; text-align: center;
     }
-
     @keyframes popIn {
       0% {opacity: 0; transform: scale(0.6);}
       100% {opacity: 1; transform: scale(1);}
     }
-
     @keyframes fadeOut {
       0%, 80% {opacity: 1; visibility: visible;}
       100% {opacity: 0; visibility: hidden;}
     }
 
     .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+      position: fixed; top: 0; left: 0; width: 100%;
       padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      flex-wrap: wrap;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0, 0, 0, 0.3); z-index: 1000; flex-wrap: wrap;
     }
-
     .top-left { color: white; font-size: 1.2rem; }
-
     .top-right {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      margin-top: 10px;
+      display: flex; gap: 15px; align-items: center; margin-top: 10px;
     }
-
     .top-right a {
-      color: #0ef;
-      font-size: 0.95rem;
+      color: #0ef; font-size: 0.95rem;
       text-decoration: none;
       background: rgba(255,255,255,0.1);
       padding: 6px 12px;
@@ -81,21 +60,15 @@
       height: 35px;
       cursor: pointer;
     }
-
     .cart-icon img { width: 100%; }
-
     .cart-count {
       position: absolute;
       top: -10px; right: -10px;
-      background: #ff3d00;
-      color: white;
+      background: #ff3d00; color: white;
       width: 18px; height: 18px;
       font-size: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      font-weight: bold;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; font-weight: bold;
     }
 
     .title-container {
@@ -116,9 +89,7 @@
 
     .search-center {
       margin-top: 25px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: flex; justify-content: center; align-items: center;
       animation: fadeIn 1s ease 3s forwards;
     }
 
@@ -133,7 +104,6 @@
       padding: 10px 20px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
-      transition: all 0.4s ease;
     }
 
     .search-box input {
@@ -146,9 +116,7 @@
     }
 
     .search-box img {
-      width: 22px;
-      height: 22px;
-      cursor: pointer;
+      width: 22px; height: 22px; cursor: pointer;
     }
 
     .product-grid {
@@ -173,14 +141,11 @@
     }
 
     .card:hover { transform: scale(1.05); }
-
     .card img { width: 100%; height: auto; }
 
     .card-content { padding: 20px; }
-
     .card-content h2 {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
+      font-size: 1.4rem; margin-bottom: 10px;
     }
 
     .price {
@@ -191,30 +156,19 @@
     }
 
     .buttons {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
+      display: flex; justify-content: space-between; gap: 10px;
     }
 
     .btn {
-      background: #0ef;
-      color: #000;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: background 0.2s ease;
+      background: #0ef; color: #000;
+      border: none; padding: 10px 16px;
+      border-radius: 8px; cursor: pointer;
+      font-size: 0.95rem; transition: background 0.2s ease;
       flex: 1;
     }
-
     .btn:hover { background: #00bcd4; }
 
-    .buy-btn {
-      background: #ff9100;
-      color: white;
-    }
-
+    .buy-btn { background: #ff9100; color: white; }
     .buy-btn:hover { background: #ff6d00; }
 
     @keyframes fadeIn {
@@ -222,54 +176,37 @@
       to {opacity: 1; transform: translateY(0);}
     }
 
-    .overlay {
+    .form-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: rgba(0, 0, 0, 0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
+      display: none; align-items: center; justify-content: center;
       z-index: 9999;
     }
 
-    .form-container {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-      backdrop-filter: blur(8px);
+    .form-box {
+      background: white;
+      border-radius: 10px;
+      max-width: 700px; width: 90%;
+      padding: 20px;
+      position: relative;
     }
 
-    .form-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .form-container input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
+    .form-box iframe {
+      width: 100%; height: 600px;
       border: none;
-      border-radius: 8px;
-      outline: none;
-      font-size: 1rem;
     }
 
-    .form-container .btn {
-      width: 100%;
-      background: #0ef;
-      color: black;
-      font-weight: bold;
+    .form-close {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 24px; color: #000;
+      cursor: pointer; font-weight: bold;
     }
-
-    .form-container .btn:hover { background: #00bcd4; }
 
     .cart-panel {
-      position: fixed;
-      top: 0; right: 0;
+      position: fixed; top: 0; right: 0;
       width: 300px; height: 100vh;
       background: rgba(0, 0, 0, 0.95);
       padding: 20px;
@@ -279,21 +216,15 @@
       color: white;
     }
 
-    .cart-panel.active {
-      transform: translateX(0%);
-    }
+    .cart-panel.active { transform: translateX(0%); }
 
-    .cart-panel h2 {
-      margin-bottom: 15px;
-      font-size: 1.5rem;
-    }
+    .cart-panel h2 { margin-bottom: 15px; font-size: 1.5rem; }
 
     .cart-item {
       border-bottom: 1px solid #555;
       margin-bottom: 10px;
       padding-bottom: 10px;
     }
-
     .cart-item p { margin: 5px 0; }
 
     .remove-btn {
@@ -321,18 +252,11 @@
     }
 
     @media (max-width: 600px) {
-      .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
       .title-banner {
-        font-size: 2.2rem;
-        padding: 12px 20px;
+        font-size: 2rem;
+        padding: 10px 20px;
       }
-      .search-box {
-        width: 80%;
-      }
+      .form-box iframe { height: 500px; }
     }
   </style>
 </head>
@@ -343,7 +267,7 @@
 <div class="top-bar">
   <div class="top-left"></div>
   <div class="top-right">
-    <a href="#">Sign In</a>
+    <a href="#" onclick="handleGoogleSignIn()">Sign In</a>
     <a href="#" onclick="showForm()">Create Account</a>
     <div class="cart-icon" onclick="toggleCart()">
       <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart" />
@@ -377,17 +301,11 @@
   </div>
 </div>
 
-<div class="overlay" id="formOverlay">
-  <div class="form-container">
-    <h2>Create Your Account</h2>
-    <form onsubmit="return submitForm()">
-      <input type="text" id="name" placeholder="Full Name" required>
-      <input type="tel" id="phone" placeholder="Phone Number" required>
-      <input type="text" id="address" placeholder="Address" required>
-      <input type="text" id="pin" placeholder="PIN Code" required>
-      <input type="email" id="email" placeholder="Gmail Address" required>
-      <button class="btn" type="submit">Create Account</button>
-    </form>
+<!-- Google Form -->
+<div class="form-overlay" id="formOverlay">
+  <div class="form-box">
+    <div class="form-close" onclick="closeForm()">×</div>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeOxezvn7s9vNb4oS3hvuPstPhGuD_6DwBITl_SudZ0ed5sQg/viewform?embedded=true">Loading…</iframe>
   </div>
 </div>
 
@@ -399,7 +317,7 @@
 </div>
 
 <script>
-  let cart = [];
+  const cart = [];
 
   function addToCart(name, price) {
     cart.push({ name, price });
@@ -417,8 +335,7 @@
           <p><strong>${item.name}</strong></p>
           <p>Price: ₹${item.price}</p>
           <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
-        </div>
-      `;
+        </div>`;
     });
   }
 
@@ -437,7 +354,7 @@
       return;
     }
     alert("Thanks for your purchase of ₹" + cart.reduce((sum, item) => sum + item.price, 0));
-    cart = [];
+    cart.length = 0;
     updateCartDisplay();
     toggleCart();
   }
@@ -446,10 +363,8 @@
     document.getElementById("formOverlay").style.display = "flex";
   }
 
-  function submitForm() {
-    alert("Account created successfully!");
+  function closeForm() {
     document.getElementById("formOverlay").style.display = "none";
-    return false;
   }
 
   function filterProducts() {
@@ -459,6 +374,19 @@
       const title = card.querySelector("h2").textContent.toLowerCase();
       card.style.display = title.includes(input) ? "block" : "none";
     });
+  }
+
+  function handleGoogleSignIn() {
+    google.accounts.id.initialize({
+      client_id: "982316564525-4ft6v3tefbm2u3eoh955g65m7a1v5gti.apps.googleusercontent.com",
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.prompt(); // Shows the One Tap or Sign In popup
+  }
+
+  function handleCredentialResponse(response) {
+    console.log("Google credential response:", response);
+    alert("Google Sign-In successful!\nToken: " + response.credential);
   }
 </script>
 </body>
