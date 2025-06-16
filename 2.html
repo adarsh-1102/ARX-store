@@ -5,48 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ARX Stores</title>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&display=swap" rel="stylesheet">
-
-  <!-- Google Identity Services -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; }
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Unbounded', sans-serif;
+    }
+
     body {
       background: linear-gradient(135deg, #1b1b2f, #1f4068);
-      color: white; min-height: 100vh; overflow-x: hidden;
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
+
     .intro {
-      position: fixed; top: 0; left: 0; height: 100vh; width: 100vw;
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh; width: 100vw;
       background: linear-gradient(to right, #5f72be, #9b23ea);
       display: flex; align-items: center; justify-content: center;
       z-index: 9999;
       animation: fadeOut 2.5s ease-out forwards;
     }
+
     .intro h1 {
       font-size: 4rem; color: white; opacity: 0;
-      animation: popIn 1s ease-out 0.3s forwards; text-align: center;
+      animation: popIn 1s ease-out 0.3s forwards;
+      text-align: center;
     }
+
     @keyframes popIn {
       0% {opacity: 0; transform: scale(0.6);}
       100% {opacity: 1; transform: scale(1);}
     }
+
     @keyframes fadeOut {
       0%, 80% {opacity: 1; visibility: visible;}
       100% {opacity: 0; visibility: hidden;}
     }
 
     .top-bar {
-      position: fixed; top: 0; left: 0; width: 100%;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
       padding: 10px 20px;
-      display: flex; justify-content: space-between; align-items: center;
-      background: rgba(0, 0, 0, 0.3); z-index: 1000; flex-wrap: wrap;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      flex-wrap: wrap;
     }
+
     .top-left { color: white; font-size: 1.2rem; }
+
     .top-right {
-      display: flex; gap: 15px; align-items: center; margin-top: 10px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin-top: 10px;
     }
+
+    .auth-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .auth-links.hidden {
+      display: none !important;
+    }
+
     .top-right a {
-      color: #0ef; font-size: 0.95rem;
+      color: #0ef;
+      font-size: 0.95rem;
       text-decoration: none;
       background: rgba(255,255,255,0.1);
       padding: 6px 12px;
@@ -60,15 +92,43 @@
       height: 35px;
       cursor: pointer;
     }
-    .cart-icon img { width: 100%; }
+
+    .cart-icon img {
+      width: 100%;
+      filter: drop-shadow(0 0 1px cyan);
+    }
+
     .cart-count {
       position: absolute;
       top: -10px; right: -10px;
-      background: #ff3d00; color: white;
+      background: #ff3d00;
+      color: white;
       width: 18px; height: 18px;
       font-size: 0.75rem;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%; font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    .three-dots {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .three-dots span {
+      display: block;
+      width: 5px;
+      height: 5px;
+      background: #0ef;
+      border-radius: 50%;
     }
 
     .title-container {
@@ -76,6 +136,8 @@
       margin-top: 100px;
       opacity: 0;
       animation: fadeIn 1s ease 2.6s forwards;
+      animation-delay: 2.6s;
+      animation-fill-mode: forwards;
     }
 
     .title-banner {
@@ -89,8 +151,12 @@
 
     .search-center {
       margin-top: 25px;
-      display: flex; justify-content: center; align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
       animation: fadeIn 1s ease 3s forwards;
+      animation-fill-mode: forwards;
     }
 
     .search-box {
@@ -116,7 +182,9 @@
     }
 
     .search-box img {
-      width: 22px; height: 22px; cursor: pointer;
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
     }
 
     .product-grid {
@@ -125,7 +193,7 @@
       margin-top: 40px;
       flex-wrap: wrap;
       opacity: 0;
-      animation: fadeIn 1s ease 3.5s forwards;
+      animation: fadeIn 1s ease 3.4s forwards;
     }
 
     .card {
@@ -142,10 +210,10 @@
 
     .card:hover { transform: scale(1.05); }
     .card img { width: 100%; height: auto; }
-
     .card-content { padding: 20px; }
     .card-content h2 {
-      font-size: 1.4rem; margin-bottom: 10px;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
     }
 
     .price {
@@ -156,19 +224,28 @@
     }
 
     .buttons {
-      display: flex; justify-content: space-between; gap: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
     }
 
     .btn {
-      background: #0ef; color: #000;
-      border: none; padding: 10px 16px;
-      border-radius: 8px; cursor: pointer;
-      font-size: 0.95rem; transition: background 0.2s ease;
+      background: #0ef;
+      color: #000;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.2s ease;
       flex: 1;
     }
-    .btn:hover { background: #00bcd4; }
 
-    .buy-btn { background: #ff9100; color: white; }
+    .btn:hover { background: #00bcd4; }
+    .buy-btn {
+      background: #ff9100;
+      color: white;
+    }
     .buy-btn:hover { background: #ff6d00; }
 
     @keyframes fadeIn {
@@ -181,32 +258,40 @@
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: rgba(0, 0, 0, 0.7);
-      display: none; align-items: center; justify-content: center;
+      display: none;
+      align-items: center;
+      justify-content: center;
       z-index: 9999;
     }
 
     .form-box {
       background: white;
       border-radius: 10px;
-      max-width: 700px; width: 90%;
+      max-width: 700px;
+      width: 90%;
       padding: 20px;
       position: relative;
     }
 
     .form-box iframe {
-      width: 100%; height: 600px;
+      width: 100%;
+      height: 600px;
       border: none;
     }
 
     .form-close {
       position: absolute;
-      top: 10px; right: 15px;
-      font-size: 24px; color: #000;
-      cursor: pointer; font-weight: bold;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      color: #000;
+      cursor: pointer;
+      font-weight: bold;
     }
 
     .cart-panel {
-      position: fixed; top: 0; right: 0;
+      position: fixed;
+      top: 0; right: 0;
       width: 300px; height: 100vh;
       background: rgba(0, 0, 0, 0.95);
       padding: 20px;
@@ -217,7 +302,6 @@
     }
 
     .cart-panel.active { transform: translateX(0%); }
-
     .cart-panel h2 { margin-bottom: 15px; font-size: 1.5rem; }
 
     .cart-item {
@@ -225,6 +309,7 @@
       margin-bottom: 10px;
       padding-bottom: 10px;
     }
+
     .cart-item p { margin: 5px 0; }
 
     .remove-btn {
@@ -251,12 +336,57 @@
       width: 100%;
     }
 
+    .dots-panel {
+      position: fixed;
+      top: 0; right: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(30, 30, 30, 0.95);
+      box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+      padding: 20px;
+      transform: translateX(100%);
+      transition: transform 0.4s ease;
+      z-index: 10001;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      overflow-y: auto;
+    }
+
+    .dots-panel.active { transform: translateX(0%); }
+
+    .dots-panel .close-dots {
+      align-self: flex-end;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #0ef;
+      font-weight: bold;
+      user-select: none;
+      margin-bottom: 10px;
+    }
+
+    .dots-panel .option {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 12px 20px;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .dots-panel .option img {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+    }
+
     @media (max-width: 600px) {
-      .title-banner {
-        font-size: 2rem;
-        padding: 10px 20px;
-      }
+      .title-banner { font-size: 2rem; padding: 10px 20px; }
       .form-box iframe { height: 500px; }
+      .search-box { width: 80%; }
+      .dots-panel { width: 220px; padding: 15px; }
     }
   </style>
 </head>
@@ -267,11 +397,16 @@
 <div class="top-bar">
   <div class="top-left"></div>
   <div class="top-right">
-    <a href="#" onclick="handleGoogleSignIn()">Sign In</a>
-    <a href="#" onclick="showForm()">Create Account</a>
-    <div class="cart-icon" onclick="toggleCart()">
-      <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart" />
+    <div class="auth-links" id="authLinks">
+      <a href="#">Sign In</a>
+      <a href="#" onclick="showForm()">Create Account</a>
+    </div>
+    <div class="cart-icon" onclick="toggleCart()" title="Cart">
+      <img src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png" alt="Cart" />
       <div class="cart-count" id="cartCount">0</div>
+    </div>
+    <div class="three-dots" onclick="toggleDotsPanel()" title="More options">
+      <span></span><span></span><span></span>
     </div>
   </div>
 </div>
@@ -282,7 +417,7 @@
 
 <div class="search-center">
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()">
+    <input type="text" id="searchInput" placeholder="Search" onkeyup="filterProducts()">
     <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Search">
   </div>
 </div>
@@ -301,7 +436,6 @@
   </div>
 </div>
 
-<!-- Google Form -->
 <div class="form-overlay" id="formOverlay">
   <div class="form-box">
     <div class="form-close" onclick="closeForm()">×</div>
@@ -316,8 +450,24 @@
   <button class="btn buy-all-btn" onclick="buyAll()">Buy All</button>
 </div>
 
+<div class="dots-panel" id="dotsPanel">
+  <div class="close-dots" onclick="toggleDotsPanel()">×</div>
+  <div class="option" onclick="addProfile()">
+    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" />
+    Add Another Profile
+  </div>
+  <div class="option" onclick="customerSupport()">
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" />
+    Customer Support
+  </div>
+  <div class="option" onclick="contactOption()">
+    <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" />
+    Contact Us
+  </div>
+</div>
+
 <script>
-  const cart = [];
+  let cart = [];
 
   function addToCart(name, price) {
     cart.push({ name, price });
@@ -335,7 +485,8 @@
           <p><strong>${item.name}</strong></p>
           <p>Price: ₹${item.price}</p>
           <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
-        </div>`;
+        </div>
+      `;
     });
   }
 
@@ -354,13 +505,15 @@
       return;
     }
     alert("Thanks for your purchase of ₹" + cart.reduce((sum, item) => sum + item.price, 0));
-    cart.length = 0;
+    cart = [];
     updateCartDisplay();
     toggleCart();
   }
 
   function showForm() {
     document.getElementById("formOverlay").style.display = "flex";
+    document.getElementById('authLinks').classList.add('hidden');
+    localStorage.setItem('accountCreated', 'true');
   }
 
   function closeForm() {
@@ -376,18 +529,30 @@
     });
   }
 
-  function handleGoogleSignIn() {
-    google.accounts.id.initialize({
-      client_id: "982316564525-4ft6v3tefbm2u3eoh955g65m7a1v5gti.apps.googleusercontent.com",
-      callback: handleCredentialResponse
-    });
-    google.accounts.id.prompt(); // Shows the One Tap or Sign In popup
+  function toggleDotsPanel() {
+    document.getElementById('dotsPanel').classList.toggle('active');
   }
 
-  function handleCredentialResponse(response) {
-    console.log("Google credential response:", response);
-    alert("Google Sign-In successful!\nToken: " + response.credential);
+  function addProfile() {
+    toggleDotsPanel(); // Close the dots panel first
+    showForm();
   }
+
+  function customerSupport() {
+    alert("Customer Support clicked!");
+  }
+
+  function contactOption() {
+    alert("Contact option clicked!");
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    // Hide auth links if account was already created
+    if (localStorage.getItem('accountCreated') === 'true') {
+      document.getElementById('authLinks').classList.add('hidden');
+    }
+  });
 </script>
+
 </body>
 </html>
