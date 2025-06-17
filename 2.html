@@ -136,8 +136,6 @@
       margin-top: 100px;
       opacity: 0;
       animation: fadeIn 1s ease 2.6s forwards;
-      animation-delay: 2.6s;
-      animation-fill-mode: forwards;
     }
 
     .title-banner {
@@ -156,7 +154,6 @@
       align-items: center;
       opacity: 0;
       animation: fadeIn 1s ease 3s forwards;
-      animation-fill-mode: forwards;
     }
 
     .search-box {
@@ -390,6 +387,121 @@
     }
   </style>
 </head>
+<!-- Place this inside your <script> tag at the bottom of the HTML -->
+<script>
+  let cart = [];
+
+  function addToCart(name, price) {
+    cart.push({ name, price });
+    updateCartDisplay();
+    alert(name + " added to cart!");
+  }
+
+  function updateCartDisplay() {
+    document.getElementById('cartCount').textContent = cart.length;
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+    cart.forEach((item, index) => {
+      cartItems.innerHTML += `
+        <div class="cart-item">
+          <p><strong>${item.name}</strong></p>
+          <p>Price: ₹${item.price}</p>
+          <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+        </div>
+      `;
+    });
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCartDisplay();
+  }
+
+  function toggleCart() {
+    document.getElementById('cartPanel').classList.toggle('active');
+  }
+
+  function buyAll() {
+    if (cart.length === 0) {
+      alert("Cart is empty!");
+      return;
+    }
+    alert("Thanks for your purchase of ₹" + cart.reduce((sum, item) => sum + item.price, 0));
+    cart = [];
+    updateCartDisplay();
+    toggleCart();
+  }
+
+  function showForm() {
+    const overlay = document.getElementById("formOverlay");
+    overlay.style.display = "flex";
+    document.getElementById('authLinks').classList.add('hidden');
+    localStorage.setItem('accountCreated', 'true');
+
+    // Detect form submission inside iframe
+    const iframe = overlay.querySelector('iframe');
+    const observer = new MutationObserver(() => {
+      const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      const thankYouText = innerDoc.body && innerDoc.body.innerText;
+      if (thankYouText && thankYouText.includes("Thank you for registering")) {
+        closeForm();
+        setTimeout(() => {
+          location.href = location.origin; // Redirect to homepage
+        }, 500);
+        observer.disconnect();
+      }
+    });
+
+    iframe.onload = () => {
+      observer.observe(iframe.contentDocument.body, { childList: true, subtree: true });
+    };
+  }
+
+  function closeForm() {
+    document.getElementById("formOverlay").style.display = "none";
+  }
+
+  function filterProducts() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+      const title = card.querySelector("h2").textContent.toLowerCase();
+      card.style.display = title.includes(input) ? "block" : "none";
+    });
+  }
+
+  function toggleDotsPanel() {
+    document.getElementById('dotsPanel').classList.toggle('active');
+  }
+
+  function addProfile() {
+    toggleDotsPanel();
+    handleCreateAccount();
+  }
+
+  function customerSupport() {
+    alert("Customer Support clicked!");
+  }
+
+  function contactOption() {
+    alert("Contact option clicked!");
+  }
+
+  function handleCreateAccount() {
+    if (window.innerWidth <= 600) {
+      window.open("https://docs.google.com/forms/d/e/1FAIpQLSeOxezvn7s9vNb4oS3hvuPstPhGuD_6DwBITl_SudZ0ed5sQg/viewform", "_blank");
+    } else {
+      showForm();
+    }
+  }
+
+  window.onload = function () {
+    if (localStorage.getItem('accountCreated') === 'true') {
+      document.getElementById('authLinks').classList.add('hidden');
+    }
+  };
+</script>
+
 <body>
 
 <div class="intro"><h1>ARX Stores</h1></div>
@@ -399,7 +511,7 @@
   <div class="top-right">
     <div class="auth-links" id="authLinks">
       <a href="#">Sign In</a>
-      <a href="#" onclick="showForm()">Create Account</a>
+      <a href="#" onclick="handleCreateAccount()">Create Account</a>
     </div>
     <div class="cart-icon" onclick="toggleCart()" title="Cart">
       <img src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png" alt="Cart" />
@@ -534,8 +646,8 @@
   }
 
   function addProfile() {
-    toggleDotsPanel(); // Close the dots panel first
-    showForm();
+    toggleDotsPanel();
+    handleCreateAccount();
   }
 
   function customerSupport() {
@@ -546,12 +658,19 @@
     alert("Contact option clicked!");
   }
 
-  window.addEventListener("DOMContentLoaded", () => {
-    // Hide auth links if account was already created
+  function handleCreateAccount() {
+    if (window.innerWidth <= 600) {
+      window.open("https://docs.google.com/forms/d/e/1FAIpQLSeOxezvn7s9vNb4oS3hvuPstPhGuD_6DwBITl_SudZ0ed5sQg/viewform", "_blank");
+    } else {
+      showForm();
+    }
+  }
+
+  window.onload = function () {
     if (localStorage.getItem('accountCreated') === 'true') {
       document.getElementById('authLinks').classList.add('hidden');
     }
-  });
+  };
 </script>
 
 </body>
