@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ARX Stores</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Unbounded', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1b1b2f, #1f4068);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .intro {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh; width: 100vw;
+      background: linear-gradient(to right, #5f72be, #9b23ea);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+      animation: fadeOut 2.5s ease-out forwards;
+    }
+
+    .intro h1 {
+      font-size: 4rem; color: white; opacity: 0;
+      animation: popIn 1s ease-out 0.3s forwards;
+      text-align: center;
+    }
+
+    @keyframes popIn {
+      0% {opacity: 0; transform: scale(0.6);}
+      100% {opacity: 1; transform: scale(1);}
+    }
+
+    @keyframes fadeOut {
+      0%, 80% {opacity: 1; visibility: visible;}
+      100% {opacity: 0; visibility: hidden;}
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .top-left { color: white; font-size: 1.2rem; }
+
+    .top-right {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .auth-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .auth-links.hidden {
+      display: none !important;
+    }
+
+    .top-right a {
+      color: #0ef;
+      font-size: 0.95rem;
+      text-decoration: none;
+      background: rgba(255,255,255,0.1);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .cart-icon {
+      position: relative;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+    }
+
+    .cart-icon img {
+      width: 100%;
+      filter: drop-shadow(0 0 1px cyan);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -10px; right: -10px;
+      background: #ff3d00;
+      color: white;
+      width: 18px; height: 18px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    .three-dots {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .three-dots span {
+      display: block;
+      width: 5px;
+      height: 5px;
+      background: #0ef;
+      border-radius: 50%;
+    }
+
+    .title-container {
+      text-align: center;
+      margin-top: 100px;
+      opacity: 0;
+      animation: fadeIn 1s ease 2.6s forwards;
+    }
+
+    .title-banner {
+      font-size: 3rem;
+      background: linear-gradient(to right, #5f72be, #9b23ea);
+      display: inline-block;
+      padding: 15px 40px;
+      border-radius: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-center {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 1s ease 3s forwards;
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      width: 50%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 40px;
+      padding: 10px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+    }
+
+    .search-box input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .search-box img {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+    }
+
+    .product-grid {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeIn 1s ease 3.4s forwards;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      max-width: 340px;
+      transition: transform 0.3s ease;
+      margin: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card:hover { transform: scale(1.05); }
+    .card img { width: 100%; height: auto; }
+    .card-content { padding: 20px; }
+    .card-content h2 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      color: #00ffae;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .btn {
+      background: #0ef;
+      color: #000;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.2s ease;
+      flex: 1;
+    }
+
+    .btn:hover { background: #00bcd4; }
+    .buy-btn {
+      background: #ff9100;
+      color: white;
+    }
+    .buy-btn:hover { background: #ff6d00; }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .form-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .form-box {
+      background: white;
+      border-radius: 10px;
+      max-width: 700px;
+      width: 90%;
+      padding: 20px;
+      position: relative;
+    }
+
+    .form-box iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+
+    .form-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      color: #000;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .cart-panel {
+      position: fixed;
+      top: 0; right: 0;
+      width: 300px; height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      padding: 20px;
+      transform: translateX(100%);
+      transition: transform 0.4s ease;
+      z-index: 10000;
+      color: white;
+    }
+
+    .cart-panel.active { transform: translateX(0%); }
+    .cart-panel h2 { margin-bottom: 15px; font-size: 1.5rem; }
+
+    .cart-item {
+      border-bottom: 1px solid #555;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+
+    .cart-item p { margin: 5px 0; }
+
+    .remove-btn {
+      background: #ff3d00;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .close-cart {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .buy-all-btn {
+      margin-top: 20px;
+      background: #00c853;
+      width: 100%;
+    }
+
+    .dots-panel {
+      position: fixed;
+      top: 0; right: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(30, 30, 30, 0.95);
+      box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+      padding: 20px;
+      transform: translateX(100%);
+      transition: transform 0.4s ease;
+      z-index: 10001;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      overflow-y: auto;
+    }
+
+    .dots-panel.active { transform: translateX(0%); }
+
+    .dots-panel .close-dots {
+      align-self: flex-end;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #0ef;
+      font-weight: bold;
+      user-select: none;
+      margin-bottom: 10px;
+    }
+
+    .dots-panel .option {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 12px 20px;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .dots-panel .option img {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ✅ UPDATED: Customer Support Popup Style */
+    .support-popup {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      font-size: 0.95rem;
+      font-weight: 500;
+      max-width: 300px;
+      z-index: 10002;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.4s ease;
+      pointer-events: none;
+    }
+
+    .support-popup.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .support-popup strong {
+      color: #0ef;
+    }
+
+    @media (max-width: 600px) {
+      .title-banner { font-size: 2rem; padding: 10px 20px; }
+      .form-box iframe { height: 500px; }
+      .search-box { width: 80%; }
+      .dots-panel { width: 220px; padding: 15px; }
+      .support-popup {
+        right: 15px;
+        bottom: 20px;
+        padding: 15px 20px;
+        font-size: 0.85rem;
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="intro"><h1>ARX Stores</h1></div>
+
+<div class="top-bar">
+  <div class="top-left"></div>
+  <div class="top-right">
+    <div class="auth-links" id="authLinks">
+      <a href="#">Sign In</a>
+      <a href="#" onclick="handleCreateAccount()">Create Account</a>
+    </div>
+    <div class="cart-icon" onclick="toggleCart()" title="Cart">
+      <img src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png" alt="Cart" />
+      <div class="cart-count" id="cartCount">0</div>
+    </div>
+    <div class="three-dots" onclick="toggleDotsPanel()" title="More options">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</div>
+
+<div class="title-container">
+  <h1 class="title-banner">ARX Stores</h1>
+</div>
+
+<div class="search-center">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search" onkeyup="filterProducts()">
+    <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Search">
+  </div>
+</div>
+
+<div class="product-grid" id="productGrid">
+  <div class="card">
+    <img src="https://tinypic.host/images/2025/07/13/1.jpeg" alt="Product Image" style="width:300px;"
+    <div class="card-content">
+      <h2>Modern Geometric Joggers</h2>
+      <div class="price">₹699</div>
+      <div class="buttons">
+        <button class="btn" onclick="addToCart('Modern Geometric Joggers', 699)">Add to Cart</button>
+        <button class="btn buy-btn">Buy Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🔓 Google Form Overlay -->
+<div class="form-overlay" id="formOverlay">
+  <div class="form-box">
+    <div class="form-close" onclick="closeForm()">×</div>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeOxezvn7s9vNb4oS3hvuPstPhGuD_6DwBITl_SudZ0ed5sQg/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+  </div>
+</div>
+
+<!-- 🛒 Cart Panel -->
+<div class="cart-panel" id="cartPanel">
+  <div class="close-cart" onclick="toggleCart()">✖</div>
+  <h2>Your Cart</h2>
+  <div id="cartItems"></div>
+  <button class="btn buy-all-btn" onclick="buyAll()">Buy All</button>
+</div>
+
+<!-- ⋮ Dots Panel -->
+<div class="dots-panel" id="dotsPanel">
+  <div class="close-dots" onclick="toggleDotsPanel()">×</div>
+  <div class="option" onclick="handleCreateAccount()">
+    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" />
+    Add Another Profile
+  </div>
+  <div class="option" onclick="customerSupport()">
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" />
+    Customer Support
+  </div>
+  <div class="option" onclick="contactOption()">
+    <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" />
+    Contact Us
+  </div>
+</div>
+
+<!-- 📬 Customer Support Popup -->
+<div class="support-popup" id="supportPopup">
+  <p>Write an Email to <strong>arxstores777@gmail.com</strong></p>
+</div>
+
+</body>
+</html>
+<script>
+  let cart = [];
+
+  function addToCart(name, price) {
+    cart.push({ name, price });
+    updateCartDisplay();
+    alert(name + " added to cart!");
+  }
+
+  function updateCartDisplay() {
+    document.getElementById('cartCount').textContent = cart.length;
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+    cart.forEach((item, index) => {
+      cartItems.innerHTML += `
+        <div class="cart-item">
+          <p><strong>${item.name}</strong></p>
+          <p>Price: ₹${item.price}</p>
+          <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+        </div>
+      `;
+    });
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCartDisplay();
+  }
+
+  function toggleCart() {
+    document.getElementById('cartPanel').classList.toggle('active');
+  }
+
+  function buyAll() {
+    if (cart.length === 0) {
+      alert("Cart is empty!");
+      return;
+    }
+    alert("Thanks for your purchase of ₹" + cart.reduce((sum, item) => sum + item.price, 0));
+    cart = [];
+    updateCartDisplay();
+    toggleCart();
+  }
+
+  function handleCreateAccount() {
+    toggleDotsPanel(); // Close menu if open
+    showForm();
+  }
+
+  function showForm() {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSeOxezvn7s9vNb4oS3hvuPstPhGuD_6DwBITl_SudZ0ed5sQg/viewform";
+
+    if (isMobile) {
+      // On mobile, open in a new tab
+      window.open(formURL, "_blank");
+      localStorage.setItem('accountCreated', 'true');
+      document.getElementById('authLinks').classList.add('hidden');
+    } else {
+      // On desktop, show overlay
+      document.getElementById("formOverlay").style.display = "flex";
+      localStorage.setItem('accountCreated', 'true');
+      document.getElementById('authLinks').classList.add('hidden');
+    }
+  }
+
+  function closeForm() {
+    document.getElementById("formOverlay").style.display = "none";
+  }
+
+  function filterProducts() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+      const name = card.querySelector("h2").textContent.toLowerCase();
+      card.style.display = name.includes(input) ? "block" : "none";
+    });
+  }
+
+  function toggleDotsPanel() {
+    document.getElementById("dotsPanel").classList.toggle("active");
+  }
+
+  function customerSupport() {
+    const popup = document.getElementById('supportPopup');
+    popup.classList.add('active');
+    setTimeout(() => {
+      popup.classList.remove('active');
+    }, 4000);
+  }
+
+  function contactOption() {
+    alert("Contact option clicked");
+  }
+
+  window.onload = () => {
+    if (localStorage.getItem('accountCreated') === 'true') {
+      document.getElementById('authLinks').classList.add('hidden');
+    }
+  };
+</script>
+
+</body>
+</html>
