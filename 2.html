@@ -363,15 +363,17 @@
     }
 
     .dots-panel .option {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 12px 20px;
-      border-radius: 8px;
-      color: white;
-      font-size: 1.1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-    }
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* ✅ This line removes underline */
+}
+
 
     .dots-panel .option img {
       margin-right: 10px;
@@ -507,10 +509,11 @@
     <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" />
     Customer Support
   </div>
-  <div class="option" onclick="contactOption()">
-    <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" />
-    Contact Us
-  </div>
+  <a class="option" href="https://docs.google.com/forms/d/e/1FAIpQLSfN5uaVIIZvKrwED6Z44UcLSPt0Kb25iXqXFgAjd9Wp1sTigg/viewform" target="_blank">
+  <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" />
+  Contact Us
+</a>
+
 </div>
 
 <!-- 🔷 Customer Support Popup -->
