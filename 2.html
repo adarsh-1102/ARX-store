@@ -425,10 +425,16 @@
       }
     }
   </style>
+
+       
+  
 </head>
 <body>
+
+<!-- 🔷 Intro Animation -->
 <div class="intro"><h1>ARX Stores</h1></div>
 
+<!-- 🔷 Top Bar -->
 <div class="top-bar">
   <div class="top-left"></div>
   <div class="top-right">
@@ -446,10 +452,12 @@
   </div>
 </div>
 
+<!-- 🔷 Title -->
 <div class="title-container">
   <h1 class="title-banner">ARX Stores</h1>
 </div>
 
+<!-- 🔷 Search Box -->
 <div class="search-center">
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search" onkeyup="filterProducts()">
@@ -457,9 +465,10 @@
   </div>
 </div>
 
+<!-- 🔷 Product Grid -->
 <div class="product-grid" id="productGrid">
   <div class="card">
-    <img src='https://i.postimg.cc/mgqwtshH/111.jpg' alt='Joggers'/>
+    <a href="https://ibb.co/F47P767W"><img src="https://i.ibb.co/DfKqK4Kb/111.jpg" alt="111" border="0"></a>
     <div class="card-content">
       <h2>Modern Geometric Joggers</h2>
       <div class="price">₹699</div>
@@ -471,7 +480,7 @@
   </div>
 </div>
 
-<!-- 🔓 Google Form Overlay -->
+<!-- 🔷 Create Account Form Overlay -->
 <div class="form-overlay" id="formOverlay">
   <div class="form-box">
     <div class="form-close" onclick="closeForm()">×</div>
@@ -479,7 +488,7 @@
   </div>
 </div>
 
-<!-- 🛒 Cart Panel -->
+<!-- 🔷 Cart Panel -->
 <div class="cart-panel" id="cartPanel">
   <div class="close-cart" onclick="toggleCart()">✖</div>
   <h2>Your Cart</h2>
@@ -487,7 +496,7 @@
   <button class="btn buy-all-btn" onclick="buyAll()">Buy All</button>
 </div>
 
-<!-- ⋮ Dots Panel -->
+<!-- 🔷 Three Dots Menu -->
 <div class="dots-panel" id="dotsPanel">
   <div class="close-dots" onclick="toggleDotsPanel()">×</div>
   <div class="option" onclick="handleCreateAccount()">
@@ -504,13 +513,12 @@
   </div>
 </div>
 
-<!-- 📬 Customer Support Popup -->
+<!-- 🔷 Customer Support Popup -->
 <div class="support-popup" id="supportPopup">
   <p>Write an Email to <strong>arxstores777@gmail.com</strong></p>
 </div>
 
-</body>
-</html>
+<!-- 🔷 JavaScript -->
 <script>
   let cart = [];
 
@@ -565,12 +573,10 @@
     const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSeOxezvn7s9vNb4oS3hvuPstPhGuD_6DwBITl_SudZ0ed5sQg/viewform";
 
     if (isMobile) {
-      // On mobile, open in a new tab
       window.open(formURL, "_blank");
       localStorage.setItem('accountCreated', 'true');
       document.getElementById('authLinks').classList.add('hidden');
     } else {
-      // On desktop, show overlay
       document.getElementById("formOverlay").style.display = "flex";
       localStorage.setItem('accountCreated', 'true');
       document.getElementById('authLinks').classList.add('hidden');
@@ -603,7 +609,9 @@
   }
 
   function contactOption() {
-    alert("Contact option clicked");
+    toggleDotsPanel(); // Close menu
+    const contactFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSfN5uaVIIZvKrwED6Z44UcLSPt0Kb25iXqXFgAjd9Wp1sTigg/viewform";
+    window.open(contactFormURL, "_blank");
   }
 
   window.onload = () => {
